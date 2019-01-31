@@ -61,11 +61,11 @@ function findAppropriateAnswer(incoming) {
         success = true;
     }
 
-    // if (/\bvitali\b/gi.test(incoming)) {
-    //     listAnswer.push("Pibe Chorro!");
-    //     listAnswer.push("\"La tuya!\"");
-    //     success = true;
-    // }
+    if (/\bvitali\b/gi.test(incoming)) {
+        listAnswer.push("Pibe Chorro!");
+        listAnswer.push('La tuya! 🇦🇷');
+        success = true;
+    }
 
     if (!success) {
         return "I'm sorry, I could not understand. Here are some things you can say: _schedule appointment_, _cancel appointment_";
