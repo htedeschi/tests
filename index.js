@@ -24,16 +24,43 @@ app.get("/", function (req, res) {
 });
 
 app.post("/whatsapp/message/send", function (req, res) {
+
+    incoming = req.body.Body;
+    answer = findAppropriateAnswer(incoming);
+
+    if (answer === undefined || answer.length == 0)
+        answer = "I'm sorry, I could not understand. Here are some things you can say: ```schedule```, ```cancel appointment```";
+
     client.messages
         .create({
-            body: `Hello there! You sent:"${req.body.Body}"`,
+            body: `${answer}`,
             from: 'whatsapp:+14155238886',
             to: req.body.From
         })
         .then(message => console.log(message.sid))
         .done();
 
+    // console.log(answer, incoming);
+
     res.setHeader('Content-Type', 'text/xml');
     res.status(200);
     res.end();
 });
+
+
+function findAppropriateAnswer(incoming) {
+    var listAnswer = [];
+
+    if (/\bhi\b/g.test(incoming) || /\bhello\b/g.test(incoming) || /\bgreetings\b/g.test(incoming)) {
+        listAnswer.push("Hello! How can I help?");
+        listAnswer.push("Hi! 😊 What do you need today?", "What's up?");
+    }
+
+    if (/\bschedule\b/g.test(incoming) || /\bcalendar\b/g.test(incoming) || /\bagenda\b/g.test(incoming)) {
+        listAnswer.push("Sweet! Which day would you like to schedule to?");
+        listAnswer.push("Ok! let's take care of that, what day you want to schedule?");
+    }
+
+    var rand = listAnswer[Math.floor(Math.random() * listAnswer.length)];
+    return rand;
+}
