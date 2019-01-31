@@ -1,0 +1,19 @@
+{
+  "name": "tests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tedeschi-byui/tests.git"
+  },
+  "author": "Henrique Tedeschi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tedeschi-byui/tests/issues"
+  },
+  "homepage": "https://github.com/tedeschi-byui/tests#readme"
+}
