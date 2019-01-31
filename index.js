@@ -22,7 +22,8 @@ app.listen(PORT, function () {
 
 
 app.get("/", function (req, res) {
-    console.log(JSON.stringify({ success: true, request: req, response: res }));
+    data = { success: true, request: req, response: res };
+    console.log(data);
     res.send("Page under construction");
     res.end();
 });
