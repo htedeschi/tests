@@ -18,6 +18,8 @@
   "homepage": "https://github.com/tedeschi-byui/tests#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "object-to-xml": "^2.0.0",
+    "twilio": "^3.27.1"
   }
 }

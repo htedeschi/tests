@@ -22,11 +22,25 @@ app.get("/", function (req, res) {
 });
 
 app.post("/whatsapp/message/send", function (req, res) {
-    var obj = { success: true, request: req.body };
+    var obj = { success: true, request: req.body, to: req.body.From };
 
-    console.log(obj);
+    // Download the helper library from https://www.twilio.com/docs/node/install
+    // Your Account Sid and Auth Token from twilio.com/console
+    const accountSid = process.env.ACCOUNT_SID;
+    const authToken = process.env.AUTH_TOKEN;
+    const client = require('twilio')(accountSid, authToken);
+    const MessagingResponse = require('twilio').twiml.MessagingResponse;
 
-    res.setHeader('Content-Type', 'application/json');
-    res.json(obj);
+    client.messages
+        .create({
+            body: `Hello there! You sent:"${req.body.Body}"`,
+            from: 'whatsapp:+14155238886',
+            to: req.body.From
+        })
+        .then(message => console.log(message.sid))
+        .done();
+
+    res.setHeader('Content-Type', 'text/xml');
+    res.status(200);
     res.end();
 });
