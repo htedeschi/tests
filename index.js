@@ -28,9 +28,6 @@ app.post("/whatsapp/message/send", function (req, res) {
     incoming = req.body.Body;
     answer = findAppropriateAnswer(incoming);
 
-    if (answer === undefined || answer.length == 0)
-        answer = "I'm sorry, I could not understand. Here are some things you can say: ```schedule```, ```cancel appointment```";
-
     client.messages
         .create({
             body: `${answer}`,
@@ -50,15 +47,22 @@ app.post("/whatsapp/message/send", function (req, res) {
 
 function findAppropriateAnswer(incoming) {
     var listAnswer = [];
+    var success = false;
 
-    if (/\bhi\b/g.test(incoming) || /\bhello\b/g.test(incoming) || /\bgreetings\b/g.test(incoming)) {
+    if (/\bhi\b/gi.test(incoming) || /\bhello\b/gi.test(incoming) || /\bgreetings\b/gi.test(incoming)) {
         listAnswer.push("Hello! How can I help?");
         listAnswer.push("Hi! 😊 What do you need today?", "What's up?");
+        success = true;
     }
 
-    if (/\bschedule\b/g.test(incoming) || /\bcalendar\b/g.test(incoming) || /\bagenda\b/g.test(incoming)) {
+    if (/\bschedule\b/gi.test(incoming) || /\bcalendar\b/gi.test(incoming) || /\bagenda\b/gi.test(incoming)) {
         listAnswer.push("Sweet! Which day would you like to schedule to?");
         listAnswer.push("Ok! let's take care of that, what day you want to schedule?");
+        success = true;
+    }
+
+    if (!success) {
+        return "I'm sorry, I could not understand. Here are some things you can say: _schedule appointment_, _cancel appointment_";
     }
 
     var rand = listAnswer[Math.floor(Math.random() * listAnswer.length)];
