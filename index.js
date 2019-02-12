@@ -2,6 +2,7 @@ const PORT = process.env.PORT || 5000
 
 var express = require("express");
 var bodyParser = require('body-parser');
+var ejs = require('ejs');
 
 // Twilio info
 const accountSid = process.env.ACCOUNT_SID;
@@ -9,12 +10,19 @@ const authToken = process.env.AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
 
 var app = express();
+var http = require('http').Server(app);
+var io = require("socket.io")(http);
+
+app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-app.listen(PORT, function () {
+app.set("views", "views");
+app.set("view engine", "ejs");
+
+http.listen(PORT, function () {
     console.log("Listening on port " + PORT);
 });
 
@@ -41,6 +49,30 @@ app.post("/whatsapp/message/send", function (req, res) {
 
     res.setHeader('Content-Type', 'text/xml');
     res.status(200);
+    res.end();
+});
+
+app.get("/socket", function (req, res) {
+    store = { open: true, time_opens: "10:00 AM", time_closes: "5:00 PM" }
+    res.render("socket", store);
+    res.end();
+});
+
+app.post("/socket", function (req, res) {
+    name = req.body.name;
+    phone = req.body.phone;
+    store_open = req.body.store_open;
+
+    var response = { success: true, name, phone, store_open };
+
+    res.json(response);
+
+    io.emit('new name', response);
+
+    if (store_open) {
+        io.emit('store update', store_open);
+    }
+
     res.end();
 });
 
