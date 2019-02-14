@@ -105,9 +105,9 @@ function findAppropriateAnswer(incoming) {
         success = true;
     }
 
-    if (/\bvitali\b/gi.test(incoming)) {
-        listAnswer.push("Pibe Chorro!");
-        listAnswer.push('La tuya! 🇦🇷');
+    if (/\bhenrique\b/gi.test(incoming)) {
+        listAnswer.push("Tedeschi?!");
+        listAnswer.push('Vai Brasil! 🇧🇷');
         success = true;
     }
 
