@@ -10,61 +10,100 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css" integrity="sha384-PDle/QlgIONtM1aqA2Qemk5gPOE7wFq8+Em+G/hmo5Iq0CCmYZLv3fVRDJ4MMwEA"
         crossorigin="anonymous">
 
-    <link href="css/the-big-picture.css" rel="stylesheet">
+    <link href="http://brobin.github.io/hacker-bootstrap/css/hacker.css" rel="stylesheet">
 </head>
 
-<body class="container">
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
+<body>
+    <nav class="navbar navbar-default navbar-static-top">
         <div class="container">
-            <a class="navbar-brand" href="#">Start Bootstrap</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Home
-                            <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Services</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Contact</a>
-                    </li>
-                </ul>
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Socket example</a>
             </div>
         </div>
     </nav>
 
-    <!-- Page Content -->
-    <section>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 bg-light mt-5">
-                    <h1>The store</h1>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt voluptates rerum eveniet
-                        sapiente
-                        repellat esse, doloremque quod recusandae deleniti nostrum assumenda vel beatae sed aut modi
-                        nesciunt porro quisquam voluptatem.
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-12 col-sm-12">
+                <h3>Console:</h3>
+                <div class="well">
+                    <p>This is an example using web sockets using socket.io.</p>
+
+                    <p>You can send a post via the form in this page or send it yourself a post to
+                        <kbd><span id="domain"></span></kbd>
+                        with data in the parameters <kbd>name</kbd> (string), <kbd>email</kbd> (string), <kbd>phone</kbd>
+                        (string), <kbd>age</kbd> (int), and
+                        and <kbd>isAPerson</kbd> (bool).
                     </p>
-                    <p class="store-status">
-                        <%if (store.open) { %>
-                        The store is open since
-                        <%- store.time_opens %> until
-                        <%- store.time_closes %>
-                        <% } %>
-                    </p>
+                    <p>This console prepends the new data (new data on top)</p>
+                    <hr />
+                    <div id="console" class="bg-dark px-5" style="max-height: 400px; overflow: auto;"></div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12 col-sm-12">
+                <h3>Form:</h3>
+                <span class="text-muted">Don't worry, we don't save anything!</span>
+                <div class="well">
+                    <form class="form-horizontal">
+                        <fieldset>
+                            <div class="form-group">
+                                <label for="inputName" class="col-lg-2 control-label">Name</label>
+                                <div class="col-lg-10">
+                                    <input required class="form-control" id="inputName" name="name" placeholder="Name"
+                                        type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmail" class="col-lg-2 control-label">Email</label>
+                                <div class="col-lg-10">
+                                    <input class="form-control" id="inputEmail" name="email" placeholder="Email" type="email">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputPhone" class="col-lg-2 control-label">Phone</label>
+                                <div class="col-lg-10">
+                                    <input class="form-control" id="inputPhone" name="phone" placeholder="Phone" type="tel">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputAge" class="col-lg-2 control-label">Age</label>
+                                <div class="col-lg-10">
+                                    <input required class="form-control" id="inputAge" name="age" placeholder="Age"
+                                        type="number" max="100" min="0">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-10">
+                                    <div class="checkbox">
+                                        <label class="mx-5">
+                                            <input name="isAPerson" type="checkbox"> Is a person?
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <p class="form-error text-danger hide">An error occurred when trying to submit the
+                                    form...</p>
+                                <div class="col-lg-12">
+                                    <button type="reset" class="btn btn-default">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
 
@@ -77,20 +116,55 @@
     <script src="/socket.io/socket.io.js"></script>
 
     <script type="text/javascript">
-        $(document).ready(function () {
-            var socket = io();
-            // socket.on('new name', function (obj) {
-            //     $(".container").append('<p> Success: ' + obj.success + '</p>');
-            //     $(".container").append('<p> Name: ' + obj.name + '</p>');
-            //     console.log(obj);
-            // });
+        var socket = io();
 
-            socket.on('store update', function (obj) {
-                if (obj === "false") {
-                    $(".store-status").html("<p class='text-danger'>The store is currently closed. I'm sorry</p>")
-                }
+
+        socket.on('user connected', function (obj) {
+            var para = document.createElement("P");
+            var t = document.createTextNode("A new user is connected! " + obj);
+            para.appendChild(t);
+            $("#console").prepend(para);
+        });
+
+        socket.on('user disconnected', function (obj) {
+            var para = document.createElement("P");
+            var t = document.createTextNode("A user just disconnected! " + obj);
+            para.appendChild(t);
+            $("#console").prepend(para);
+        });
+
+        socket.on('post received', function (obj) {
+            var para = document.createElement("P");
+            var t = document.createTextNode("Post request was received! " + JSON.stringify(obj));
+            para.appendChild(t);
+            $("#console").prepend(para);
+        });
+
+        $(document).ready(function () {
+            var link = document.getElementById('domain');
+            link.innerText = window.location.host + '/socket';
+
+            $("form").on("submit", function (event) {
+                event.preventDefault();
+
+                var datastring = $(this).serialize();
+                console.log(datastring);
+
+                $.ajax({
+                    type: "POST",
+                    url: "/socket",
+                    data: datastring,
+                    dataType: "json",
+                    success: function (data) {
+                        $("form").trigger("reset");
+                    },
+                    error: function () {
+                        $(".form-error").show();
+                    }
+                });
             });
         });
+
     </script>
 </body>
 

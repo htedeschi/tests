@@ -53,28 +53,40 @@ app.post("/whatsapp/message/send", function (req, res) {
 });
 
 app.get("/socket", function (req, res) {
-    store = { open: true, time_opens: "10:00 AM", time_closes: "5:00 PM" }
-    res.render("socket", store);
+    res.render("socket");
     res.end();
 });
 
 app.post("/socket", function (req, res) {
     name = req.body.name;
+    email = req.body.email;
     phone = req.body.phone;
-    store_open = req.body.store_open;
+    age = req.body.age;
+    isAPerson = req.body.isAPerson;
 
-    var response = { success: true, name, phone, store_open };
-
+    var response = { success: true, name, email, phone, age, isAPerson };
     res.json(response);
-
-    io.emit('new name', response);
-
-    if (store_open) {
-        io.emit('store update', store_open);
-    }
-
+    io.emit('post received', response);
     res.end();
 });
+
+
+var clients = [];
+
+io.on('connection', function (socket) {
+    console.log("Client connected!", socket.id);
+    clients.push({ client_id: clients.length, socket_id: socket.id });
+    console.log("clients var: ", clients);
+    io.emit("user connected", socket.id);
+
+    socket.on('disconnect', function () {
+        console.log("Client disconnected!", socket.id);
+        clients.splice(clients.findIndex(item => item.socket_id === socket.id), 1)
+        console.log("clients var: ", clients);
+        io.emit("user disconnected", socket.id);
+    });
+});
+
 
 
 function findAppropriateAnswer(incoming) {
