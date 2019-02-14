@@ -31,6 +31,10 @@ app.get("/", function (req, res) {
     res.end();
 });
 
+app.use(function (req, res, next) {
+    res.status(404).render('404');
+})
+
 app.post("/whatsapp/message/send", function (req, res) {
 
     incoming = req.body.Body;
