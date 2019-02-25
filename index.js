@@ -57,6 +57,11 @@ app.get("/socket", function (req, res) {
     res.end();
 });
 
+app.get("/payment", function (req, res) {
+    res.render("payment");
+    res.end();
+});
+
 app.post("/socket", function (req, res) {
     name = req.body.name;
     email = req.body.email;
@@ -78,6 +83,10 @@ io.on('connection', function (socket) {
     clients.push({ client_id: clients.length, socket_id: socket.id });
     console.log("clients var: ", clients);
     io.emit("user connected", socket.id);
+
+    socket.on('range update', function (obj) {
+        io.emit("range update", obj);
+    });
 
     socket.on('disconnect', function () {
         console.log("Client disconnected!", socket.id);

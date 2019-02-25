@@ -7,8 +7,8 @@
     <title>Socket.io Example</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css" integrity="sha384-PDle/QlgIONtM1aqA2Qemk5gPOE7wFq8+Em+G/hmo5Iq0CCmYZLv3fVRDJ4MMwEA"
-        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css"
+        integrity="sha384-PDle/QlgIONtM1aqA2Qemk5gPOE7wFq8+Em+G/hmo5Iq0CCmYZLv3fVRDJ4MMwEA" crossorigin="anonymous">
 
     <link href="https://brobin.github.io/hacker-bootstrap/css/hacker.css" rel="stylesheet">
 </head>
@@ -38,7 +38,8 @@
 
                     <p>You can send a post via the form in this page or send it yourself a post to
                         <kbd><span id="domain"></span></kbd>
-                        with data in the parameters <kbd>name</kbd> (string), <kbd>email</kbd> (string), <kbd>phone</kbd>
+                        with data in the parameters <kbd>name</kbd> (string), <kbd>email</kbd> (string),
+                        <kbd>phone</kbd>
                         (string), <kbd>age</kbd> (int), and
                         and <kbd>isAPerson</kbd> (bool).
                     </p>
@@ -63,13 +64,15 @@
                             <div class="form-group">
                                 <label for="inputEmail" class="col-lg-2 control-label">Email</label>
                                 <div class="col-lg-10">
-                                    <input class="form-control" id="inputEmail" name="email" placeholder="Email" type="email">
+                                    <input class="form-control" id="inputEmail" name="email" placeholder="Email"
+                                        type="email">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="inputPhone" class="col-lg-2 control-label">Phone</label>
                                 <div class="col-lg-10">
-                                    <input class="form-control" id="inputPhone" name="phone" placeholder="Phone" type="tel">
+                                    <input class="form-control" id="inputPhone" name="phone" placeholder="Phone"
+                                        type="tel">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -100,17 +103,29 @@
                         </fieldset>
                     </form>
                 </div>
+                <div class="form-group">
+                    <label for="formControlRange">Example Range input</label>
+                    <input type="range" class="form-control-range" id="formControlRange-input" min="0" max="100"
+                        step="0.5">
+                </div>
+                <div class="form-group">
+                    <label for="formControlRange">Example Range output</label>
+                    <input type="range" class="form-control-range" disabled="disabled" id="formControlRange-output"
+                        min="0" max="100" step="0.5">
+                </div>
             </div>
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/js/bootstrap.min.js"
+        integrity="sha384-7aThvCh9TypR7fIc2HV4O/nFMVCBwyIUKL8XCtKE+8xgCgl/PQGuFsvShjr74PBp"
         crossorigin="anonymous"></script>
 
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/js/bootstrap.min.js" integrity="sha384-7aThvCh9TypR7fIc2HV4O/nFMVCBwyIUKL8XCtKE+8xgCgl/PQGuFsvShjr74PBp"
-        crossorigin="anonymous"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"></script>
 
     <script src="/socket.io/socket.io.js"></script>
@@ -140,6 +155,12 @@
             $("#console").prepend(para);
         });
 
+        socket.on('range update', function (obj) {
+            console.log("Emit received!", obj);
+            var range_output = $("#formControlRange-output");
+            range_output.val(obj.data);
+        });
+
         $(document).ready(function () {
             var link = document.getElementById('domain');
             link.innerText = window.location.host + '/socket';
@@ -162,6 +183,11 @@
                         $(".form-error").show();
                     }
                 });
+            });
+
+            $("#formControlRange-input").on("change", function (event) {
+                console.log("Changed!", event.currentTarget.value);
+                socket.emit('range update', { data: event.currentTarget.value });
             });
         });
 
